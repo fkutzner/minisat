@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 2.6 FATAL_ERROR)
+cmake_minimum_required(VERSION 3.10 FATAL_ERROR)
 
 project(minisat)
 
@@ -64,16 +64,17 @@ endif()
 set_target_properties(minisat-lib-static PROPERTIES OUTPUT_NAME "minisat")
 set_target_properties(minisat-lib-shared
   PROPERTIES
-    OUTPUT_NAME "minisat" 
+    OUTPUT_NAME "minisat"
     VERSION ${MINISAT_VERSION}
     SOVERSION ${MINISAT_SOVERSION})
 
 set_target_properties(minisat_simp       PROPERTIES OUTPUT_NAME "minisat")
 
+
 #--------------------------------------------------------------------------------------------------
 # Installation targets:
 
-install(TARGETS minisat-lib-static minisat-lib-shared minisat_core minisat_simp 
+install(TARGETS minisat-lib-static minisat-lib-shared minisat_core minisat_simp
         RUNTIME DESTINATION bin
         LIBRARY DESTINATION lib
         ARCHIVE DESTINATION lib)
@@ -81,3 +82,20 @@ install(TARGETS minisat-lib-static minisat-lib-shared minisat_core minisat_simp
 install(DIRECTORY minisat/mtl minisat/utils minisat/core minisat/simp
         DESTINATION include/minisat
         FILES_MATCHING PATTERN "*.h")
+
+#--------------------------------------------------------------------------------------------------
+# Enable CMake's find_package to find minisat:
+
+set(MINISAT_VERSION "${MINISAT_SOMAJOR}.${MINISAT_SOMINOR}.${MINISAT_SORELEASE}")
+
+configure_file(${PROJECT_SOURCE_DIR}/cmake/MinisatConfig.cmake.in
+               ${CMAKE_CURRENT_BINARY_DIR}/MinisatConfig.cmake.g @ONLY)
+file(GENERATE OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/MinisatConfig.cmake
+              INPUT ${CMAKE_CURRENT_BINARY_DIR}/MinisatConfig.cmake.g)
+
+configure_file(${PROJECT_SOURCE_DIR}/cmake/MinisatConfigVersion.cmake.in
+               ${CMAKE_CURRENT_BINARY_DIR}/MinisatConfigVersion.cmake @ONLY)
+
+install(FILES ${CMAKE_CURRENT_BINARY_DIR}/MinisatConfig.cmake
+              ${CMAKE_CURRENT_BINARY_DIR}/MinisatConfigVersion.cmake
+        DESTINATION lib/CMake/Minisat)

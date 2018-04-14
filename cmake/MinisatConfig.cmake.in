@@ -1,0 +1,10 @@
+get_filename_component(MINISAT_CMAKE_DIR "${CMAKE_CURRENT_LIST_FILE}" PATH)
+set(MINISAT_INSTALL_DIR "${MINISAT_CMAKE_DIR}/../..")
+
+set(Minisat_INCLUDE_DIRS ${MINISAT_INSTALL_DIR}/include/minisat)
+
+if(MINISAT_IMPORT_STATIC_LIBRARY)
+  set(Minisat_LIBRARY ${MINISAT_INSTALL_DIR}/lib/$<TARGET_FILE_NAME:minisat-lib-static>)
+else()
+  set(Minisat_LIBRARY ${MINISAT_INSTALL_DIR}/lib/$<TARGET_FILE_NAME:minisat-lib-shared>)
+endif()
