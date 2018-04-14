@@ -111,4 +111,4 @@ configure_file(${PROJECT_SOURCE_DIR}/cmake/MinisatConfigVersion.cmake.in
 
 install(FILES ${CMAKE_CURRENT_BINARY_DIR}/MinisatConfig.cmake
               ${CMAKE_CURRENT_BINARY_DIR}/MinisatConfigVersion.cmake
-        DESTINATION lib/CMake/Minisat)
+        DESTINATION lib/cmake/Minisat)
